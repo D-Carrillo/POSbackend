@@ -15,13 +15,45 @@ require('./config/db');
 const app = express();
 
 // Middleware
+
+
+const corsOptions = {
+  origin: [
+    'https://gentle-desert-0fe0da310.6.azurestaticapps.net',
+    'http://localhost:3000' // Add if you have local development
+  ],
+  credentials: true,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Origin',
+    'X-Requested-With',
+    'Content-Type',
+    'Accept',
+    'Authorization',
+    'cache-control',
+    'pragma', // Explicitly add pragma
+    'x-auth-token', // Common auth header
+    'if-modified-since' // For cache control
+  ],
+  exposedHeaders: [
+    'Content-Length',
+    'ETag',
+    'Last-Modified',
+    'Content-Type',
+    'Authorization',
+    'cache-control',
+    'pragma'
+  ],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  maxAge: 86400 // Cache preflight response for 24 hours
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Handle all OPTIONS requests
+
 app.use(bodyParser.json());
 
-app.use(cors({
-  origin: process.env.CLIENT_ORIGIN || 'http://localhost:5000', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
 
 // Routes
 app.use('/auth', authRoutes);
