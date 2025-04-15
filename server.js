@@ -15,19 +15,21 @@ require('./config/db');
 const app = express();
 
 // Middleware
-app.use(bodyParser.json());
+
 
 const corsOptions = {
   origin: 'https://gentle-desert-0fe0da310.6.azurestaticapps.net',
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
+  allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization,cache-control',
   preflightContinue: false,
   optionsSuccessStatus: 204
 };
 
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Explicitly allow preflight across routes
+
+app.use(bodyParser.json());
 
 
 // Routes
