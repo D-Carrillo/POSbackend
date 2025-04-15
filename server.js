@@ -18,7 +18,8 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: '*', 
+  origin: 'http://localhost:3000', // EXACT origin
+  credentials: true, // Required for cookies/auth
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
