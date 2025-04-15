@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import DiscountModal from './discountModal';
 import SupplierSalesReport from './SupplierSalesReport';
 import TopSellingItemsReport from './TopSellingItemsReport';
+import DiscountReport from './discountReport';
 import axios from 'axios';
 import "./supplier-page.css";
 
@@ -23,10 +24,11 @@ const SupplierPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [expandedProductId, setExpandedProductId] = useState(null);
-    const [activeTab, setActiveTab] = useState('profile'); 
+    const [activeTab, setActiveTab] = useState('profile');
     const [lastRefreshTime, setLastRefreshTime] = useState(Date.now());
     const salesReportRef = useRef(null);
     const topItemsReportRef = useRef(null);
+    const discountReportRef = useRef(null);
     const [tempItemData, setTempItemData] = useState({
         Name: '',
         description: '',
@@ -93,9 +95,9 @@ const SupplierPage = () => {
                 handleRefreshAllData();
             }
         };
-        
+
         document.addEventListener('visibilitychange', handleVisibilityChange);
-        
+
         // Clean up
         return () => {
             document.removeEventListener('visibilitychange', handleVisibilityChange);
@@ -176,13 +178,13 @@ const SupplierPage = () => {
                 DOB: userData.DOB ? userData.DOB.split('T')[0] : null,
                 dob: userData.dob ? userData.DOB.split('T')[0] : null
             };
-    
+
             Object.keys(updateData).forEach(key => {
                 if (updateData[key] === undefined || updateData[key] === '') {
                     delete updateData[key];
                 }
             });
-    
+
             const response = await axios.put(
                 `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/update/${user.type}/${user.id}`,
                 updateData,
@@ -193,7 +195,7 @@ const SupplierPage = () => {
                     }
                 }
             );
-    
+
             const updatedUser = {
                 ...user,
                 first_name: updateData.first_name,
@@ -203,7 +205,7 @@ const SupplierPage = () => {
             localStorage.setItem('user', JSON.stringify(updatedUser));
             setEditMode(false);
             alert('Profile updated successfully!');
-    
+
         } catch (err) {
             console.error('Update error:', err);
             alert(err.response?.data?.error || 'Failed to update profile');
@@ -221,7 +223,7 @@ const SupplierPage = () => {
 
     const handleDeleteAccount = async () => {
         if (!window.confirm(`Delete your ${user.type} account?`)) return;
-            
+
         try {
             const endpoint = `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/deletion/${user.type}/${user.id}`;
 
@@ -248,7 +250,7 @@ const SupplierPage = () => {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
               }
             });
-            
+
             handleRefreshAllData();
             alert('Item deleted successfully');
           } catch (err) {
@@ -256,7 +258,7 @@ const SupplierPage = () => {
             alert('Failed to delete item');
           }
     };
-    
+
     const startEditing = (product) => {
         setEditingItem(product.item_id);
         setTempItemData({
@@ -266,11 +268,11 @@ const SupplierPage = () => {
           quantity: product.quantity
         });
     };
-      
+
     const cancelEditing = () => {
         setEditingItem(null);
     };
-      
+
     const handleTempChange = (e) => {
         const { name, value } = e.target;
         setTempItemData(prev => ({
@@ -278,7 +280,7 @@ const SupplierPage = () => {
           [name]: name === 'price' || name === 'quantity' ? Number(value) : value
         }));
     };
-      
+
     const saveChanges = async () => {
         try {
           await axios.put(
@@ -327,13 +329,13 @@ const SupplierPage = () => {
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
-                }   
+                }
                 }
             );
             handleRefreshAllData();
         } catch (err) {
             console.error('Failed to delete discount:', err);
-            setProducts(prevProducts => 
+            setProducts(prevProducts =>
                 prevProducts.map(product => ({
                 ...product,
                 discounts: product.discounts || []
@@ -345,15 +347,15 @@ const SupplierPage = () => {
     const handleLanding = () => {
         window.location.href = '/';
     }
-    
-    
+
+
 
     const handleRefreshAllData = () => {
         setLastRefreshTime(Date.now());
         fetchSupplierReport();
         fetchSupplierProducts();
         fetchDiscounts();
-        
+
         // Try to refresh child components if refs are available
         if (salesReportRef.current && typeof salesReportRef.current.refreshData === 'function') {
             salesReportRef.current.refreshData();
@@ -361,11 +363,14 @@ const SupplierPage = () => {
         if (topItemsReportRef.current && typeof topItemsReportRef.current.refreshData === 'function') {
             topItemsReportRef.current.refreshData();
         }
+        if (discountReportRef.current && typeof discountReportRef.current.refreshData === 'function') {
+            discountReportRef.current.refreshData();
+        }
     };
 
     const renderTabs = () => (
         <div className="supplier-tabs">
-            <button 
+            <button
                 className={`tab-button ${activeTab === 'profile' ? 'active' : ''}`}
                 onClick={() => {
                     setActiveTab('profile');
@@ -374,7 +379,7 @@ const SupplierPage = () => {
             >
                 Profile & Products
             </button>
-            <button 
+            <button
                 className={`tab-button ${activeTab === 'sales-summary' ? 'active' : ''}`}
                 onClick={() => {
                     setActiveTab('sales-summary');
@@ -383,7 +388,7 @@ const SupplierPage = () => {
             >
                 Sales Summary Report
             </button>
-            <button 
+            <button
                 className={`tab-button ${activeTab === 'top-items' ? 'active' : ''}`}
                 onClick={() => {
                     setActiveTab('top-items');
@@ -392,7 +397,16 @@ const SupplierPage = () => {
             >
                 Top Selling Items
             </button>
-            <button 
+            <button
+                className={`tab-button ${activeTab === 'discount' ? 'active' : ''}`}
+                onClick={() => {
+                    setActiveTab('discount');
+                    handleRefreshAllData();
+                }}
+            >
+                Discount
+            </button>
+            <button
                 className="refresh-button"
                 onClick={handleRefreshAllData}
                 title="Refresh All Data"
@@ -414,6 +428,12 @@ const SupplierPage = () => {
                 return (
                     <div className="report-section" key={`top-items-${lastRefreshTime}`}>
                         <TopSellingItemsReport supplierId={user.id} siteWide={false} ref={topItemsReportRef} />
+                    </div>
+                );
+            case 'discount':
+                return (
+                    <div className="report-section" key={`discount-${lastRefreshTime}`}>
+                        <DiscountReport supplierId={user.id} ref={discountReportRef} />
                     </div>
                 );
             case 'profile':
@@ -606,8 +626,8 @@ const SupplierPage = () => {
                                         </p>
                                         <p>{userData.Country}</p>
                                     </div>
-                                    <button 
-                                        onClick={() => setEditMode(true)} 
+                                    <button
+                                        onClick={() => setEditMode(true)}
                                         className="edit-profile-button"
                                     >
                                         Edit Profile
@@ -697,22 +717,22 @@ const SupplierPage = () => {
                                             <td className='action-buttons'>
                                             {editingItem === product.item_id ? (
                                                 <>
-                                                <button 
-                                                    onClick={saveChanges} 
+                                                <button
+                                                    onClick={saveChanges}
                                                     className="save-button"
                                                 >
                                                     Save
                                                 </button>
-                                                <button 
-                                                    onClick={cancelEditing} 
+                                                <button
+                                                    onClick={cancelEditing}
                                                     className="cancel-button"
                                                 >
                                                     Cancel
                                                 </button>
                                                 </>
                                             ) : (
-                                                <button 
-                                                onClick={() => startEditing(product)} 
+                                                <button
+                                                onClick={() => startEditing(product)}
                                                 className="modify-button"
                                                 >
                                                 Modify
@@ -737,16 +757,16 @@ const SupplierPage = () => {
                                             />
                                             </td>
                                             <td className='action-buttons'>
-                                            <button 
-                                                onClick={() => handleDelete(product.item_id)} 
+                                            <button
+                                                onClick={() => handleDelete(product.item_id)}
                                                 className="delete-button"
-                                                disabled={editingItem === product.item_id} 
+                                                disabled={editingItem === product.item_id}
                                             >
                                                 Delete
                                             </button>
                                             </td>
                                             <td>
-                                            <button 
+                                            <button
                                                 onClick={() => setExpandedProductId(isExpanded ? null : product.item_id)}
                                                 className='toggle-discounts-button'
                                             >
@@ -754,9 +774,9 @@ const SupplierPage = () => {
                                             </button>
                                             </td>
                                         </tr>
-                                        
-    
-            
+
+
+
                                         {isExpanded && (
                                             <>
                                                 {discounts && discounts.filter(discount => Number(discount.item_id) === Number(product.item_id)).length > 0 ? (
@@ -774,7 +794,7 @@ const SupplierPage = () => {
                                                             </div>
                                                         </td>
                                                         <td colSpan="2" className='action-buttons'>
-                                                            <button 
+                                                            <button
                                                             onClick={() => handleDeleteDiscount(discount.discount_id)}
                                                             className='delete-discount-button'
                                                             >
@@ -825,9 +845,9 @@ const SupplierPage = () => {
             </div>
 
             <h1>Welcome, {userData.Company_Name || `${user.first_name} ${user.last_Name}`}</h1>
-            
+
             {renderTabs()}
-            
+
             {renderContent()}
 
             <div className="footer-controls">
