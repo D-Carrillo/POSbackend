@@ -1,0 +1,137 @@
+
+  .checkout-container {
+    margin-top: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+
+  .order-summary {
+    border-right: 1px solid #eee;
+    padding-right: 20px;
+  }
+  .order-summary h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+  .summary-row.total {
+    font-weight: 600;
+    font-size: 18px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+  }
+/* Order Summary Items */
+#summary-items {
+  margin: 1rem 0;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.summary-item-list {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+  form#payment-form {
+    padding-left: 20px;
+  }
+  form#payment-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  form#payment-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  form#payment-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  .checkout-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.2s ease;
+  }
+  .checkout-button i {
+    margin-right: 8px;
+  }
+  .checkout-button:hover {
+    background-color: #43a047;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .checkout-container {
+      grid-template-columns: 1fr;
+    }
+    .order-summary {
+      border-right: none;
+      border-bottom: 1px solid #eee;
+      padding-right: 0;
+      padding-bottom: 20px;
+    }
+    form#payment-form {
+      padding-left: 0;
+    }
+  }
+  /* Discount row styling */
+.summary-row.discount-row {
+  color: #e53935;
+  font-weight: 500;
+}
+
+/* Applied discounts list */
+.applied-discounts {
+  /* margin-top: 5px; */
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  
+}
+
+
+

@@ -1,0 +1,217 @@
+
+.firstlogin {
+  border: 20px solid #00000000; /* Add a 10px solid black border */
+  margin: 0; /* Remove default body margin */
+  padding: 0; /* Remove default body padding */
+  box-sizing: border-box; /* Ensure the border is included in the element's dimensions */
+  min-height: 100vh; /* Make the body take up the full viewport height */
+  overflow: auto; /* Prevent scrollbars caused by the border */
+}
+.container {
+  display: flex;
+  height: 100vh;
+  flex-direction: row; 
+}
+
+.image-section {
+  flex: 1; 
+  position: relative;
+  overflow: hidden;
+
+}
+
+.image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0 75px 75px 0; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container {
+  flex: 1; 
+  background: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 75px 0 0 75px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  
+}
+
+.login-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -100px; /* Adjust this to control the curve */
+  width: 100px;
+  height: 100px;
+  background: rgb(235, 234, 234);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+  color: black;
+  margin-bottom: 10px;
+  font-size: 5.5vh;
+}
+
+/* Smaller input components */
+.tabs {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tab {
+  flex: 1;
+  padding: 15px; /* Smaller padding */
+  border: none;
+  background-color: #f4f4f4;
+  cursor: pointer;
+  font-size: 14px; /* Smaller font size */
+  border-radius: 5px 5px 0 0;
+  transition: background-color 0.3s ease;
+}
+
+.tab:hover {
+  background-color: #ddd;
+}
+
+.tab.active {
+  background-color: #0a377a;
+  color: white;
+}
+
+.box {
+  background-color: #ddd;
+  padding: 35px;
+  border-radius: 0 0 30px 30px;
+}
+form div {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px; /* Smaller font size */
+}
+
+input {
+  width: 70%;
+  padding: 10px; /* Smaller padding */
+  box-sizing: border-box;
+  font-size: 14px; /* Smaller font size */
+}
+
+button[type="submit"] {
+  width: 70%;
+  margin-top: 10px;
+  padding: 13px; /* Smaller padding */
+  background-color: #0a377a;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px; /* Smaller font size */
+}
+
+button[type="submit"]:hover {
+  background-color: #0a377a;
+}
+
+a {
+  color: #0a377a;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Stack sections vertically */
+  }
+
+  .image-section {
+    flex: none;
+    width: 100%;
+    height: 50vh;
+  }
+
+  .image-section img {
+    border-radius: 0; /* Remove rounded edges on mobile */
+  }
+
+  .login-container {
+    width: 100%;
+    border-radius: 0; /* Remove rounded edges on mobile */
+  }
+
+  .login-container::before {
+    display: none; /* Hide the crescent moon on mobile */
+  }
+}
+
+@media (max-width: 600px) {
+  .login-container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tab {
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+
+  input {
+    font-size: 14px;
+  }
+
+  button[type="submit"] {
+    font-size: 14px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  a {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 400px) {
+  .login-container {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .tab {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  input {
+    padding: 6px;
+  }
+
+  button[type="submit"] {
+    padding: 8px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+}

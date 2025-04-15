@@ -1,0 +1,127 @@
+/* General form container styling */
+.first-customer {
+  background-image: url("store.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat
+}
+.customerEntryForm {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form heading */
+.customerEntryForm h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form group styling */
+.customerEntryForm label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* Flex container for form elements */
+.customerEntryForm .form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-section h2 {
+  margin-bottom: 15px;
+}
+/* Form input and select styling */
+.customerEntryForm input[type="text"],
+.customerEntryForm input[type="email"],
+.customerEntryForm input[type="tel"],
+.customerEntryForm input[type="date"],
+.customerEntryForm input[type="number"],
+.customerEntryForm input[type="password"],
+.customerEntryForm select,
+.customerEntryForm textarea {
+  flex: 1;
+  width: calc(50% - 10px); /* Take half the space minus gap */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Full-width input and select for single column layout */
+.customerEntryForm input[type="text"].full-width,
+.customerEntryForm input[type="email"].full-width,
+.customerEntryForm input[type="tel"].full-width,
+.customerEntryForm input[type="date"].full-width,
+.customerEntryForm input[type="number"].full-width,
+.customerEntryForm select.full-width,
+.customerEntryForm textarea.full-width {
+  width: 100%;
+}
+
+/* Focus state for inputs and selects */
+.customerEntryForm input:focus,
+.customerEntryForm select:focus,
+.customerEntryForm textarea:focus {
+  border-color: #66afe9;
+  outline: none;
+  box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+/* Disabled state for the state dropdown */
+.customerEntryForm select:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+/* Button styling */
+.customerEntryForm button {
+  flex: 1;
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #0a377a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Button hover effect */
+.customerEntryForm button:hover {
+  background-color: #0a377a;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .customerEntryForm {
+    padding: 15px;
+  }
+
+  .customerEntryForm h1 {
+    font-size: 24px;
+  }
+
+  /* Adjust form groups to single column on smaller screens */
+  .customerEntryForm .form-group {
+    flex-direction: column;
+  }
+
+  .customerEntryForm input,
+  .customerEntryForm select,
+  .customerEntryForm button {
+    font-size: 14px;
+  }
+}
