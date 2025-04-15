@@ -1,4 +1,4 @@
-require('dotenv').congif();
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -18,7 +18,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: proccess.env.CLIENT_ORIGIN || 'http://localhost:3000', 
+  origin: process.env.CLIENT_ORIGIN || 'http://localhost:5000', 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
