@@ -18,7 +18,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://gentle-desert-0fe0da310.6.azurestaticapps.net',
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
