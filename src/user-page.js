@@ -224,7 +224,7 @@ const UserPage = () => {
                     headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
                 }
             );
-            alert(`Return processed. Refund: $${response.data.refund_amount}`);
+            alert(`Return Initiated. Refund Amount: $${parseFloat(response.data.refund_amount * 1.08).toFixed(2)}`);
             fetchTransactions();
             
         }catch (err) {
