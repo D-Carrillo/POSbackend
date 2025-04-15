@@ -115,7 +115,7 @@ const Checkout = () => {
     try {
       
       //create a transaction
-      const transactionResponse = await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/transaction`, {
+      const transactionResponse = await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/transaction`, {
         customer_id: user.id,
         total_cost: cart.totals.total,
         payment_method: 'Online',
