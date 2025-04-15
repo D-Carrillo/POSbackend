@@ -453,3 +453,94 @@ exports.getTopSellingItems = async (req, res) => {
         res.status(500).json({ error: 'Failed to generate top selling items report', details: error.message });
     }
 };
+
+exports.getDiscountReport = async (req, res) => {
+    try {
+        const supplierId = req.params.supplierId;
+        const { startDate, endDate } = req.query;
+
+        console.log("Generating supplier sales summary:", { supplierId, startDate, endDate });
+
+        if (!supplierId) {
+            return res.status(400).json({ error: 'Supplier ID is required' });
+        }
+
+        if (!startDate || !endDate) {
+            return res.status(400).json({ error: 'Start date and end date are required' });
+        }
+
+        const query = `
+            SELECT
+                SUM(ti.Subtotal - ti.Discounted_Price) AS discount_loss,
+                COUNT(DISTINCT i.Item_ID) AS items_with_discount,
+                SUM(ti.Quantity) AS discounted_sales
+            FROM
+                transaction_item ti
+            JOIN
+                item i ON ti.Item_ID = i.Item_ID
+            JOIN
+                discount d ON ti.Discount_ID = d.Discount_ID
+            WHERE
+                i.supplier_ID = ?
+                AND ti.Discount_ID IS NOT NULL
+                AND ti.Discounted_Price < ti.Subtotal`;
+
+        const startDateObj = new Date(startDate);
+        const endDateObj = new Date(endDate);
+        endDateObj.setHours(23, 59, 59, 999);
+
+        console.log("Query date range:", {
+            start: startDateObj.toISOString(),
+            end: endDateObj.toISOString()
+        });
+
+        const [results] = await db.promise().query(query, [
+            supplierId,
+        ]);
+
+        const logQuery = `
+        SELECT
+            t.Transaction_ID as transaction_id,
+            d.Name AS discount_name,
+            i.Name AS item_name,
+            t.sale_time AS sale_time,
+            ti.Subtotal AS original_price,
+            ti.Discounted_Price AS discounted_price,
+            (ti.Subtotal - ti.Discounted_Price) AS money_lost,
+            ti.Quantity AS item_quantity
+        FROM
+            transaction_item ti
+        JOIN
+            item i ON ti.Item_ID = i.Item_ID
+        LEFT JOIN
+            transaction t ON ti.Transaction_ID = t.Transaction_ID
+        JOIN
+            discount d ON ti.Discount_ID = d.Discount_ID
+        WHERE
+            i.supplier_ID = ?
+            AND ti.Discount_ID IS NOT NULL
+            AND t.sale_time BETWEEN ? AND ?
+            AND ti.Discounted_Price < ti.Subtotal`;
+
+        const [logResults] = await db.promise().query(logQuery, [
+            supplierId,
+            startDateObj,
+            endDateObj
+        ]);
+
+        res.status(200).json({
+            success: true,
+            data: {
+                d_summary: results[0],
+                period: {
+                    startDate,
+                    endDate
+                },
+                logOutput: logResults
+            }
+        });
+    } catch (error) {
+        console.error('Error generating supplier sales summary:', error);
+        res.status(500).json({ error: 'Failed to generate sales summary report', details: error.message });
+    }
+};
