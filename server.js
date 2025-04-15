@@ -17,14 +17,18 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 
-app.use(cors({
-  origin: 'http://localhost:3000', // EXACT origin
-  credentials: true, // Required for cookies/auth
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
 
-app.options('*', cors()); 
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Explicitly allow preflight across routes
+
 
 // Routes
 app.use('/auth', authRoutes);
