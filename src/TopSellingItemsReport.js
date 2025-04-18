@@ -53,9 +53,9 @@ const TopSellingItemsReport = ({ supplierId, siteWide = false }) => {
       
       
       if (!siteWide && supplierId) {
-        endpoint = `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/supplier/${supplierId}/top-selling-items`;
+        endpoint = `pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/supplier/${supplierId}/top-selling-items`;
       } else {
-        endpoint = `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/top-selling-items`;
+        endpoint = `pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/top-selling-items`;
         
         if (!siteWide && supplierId) {
           params.supplierId = supplierId;

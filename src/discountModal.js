@@ -70,9 +70,9 @@ const DiscountModal = ({ isOpen, onClose, onSubmit, itemId}) => {
                             className='model-input' 
                             type="number"
                             name="value"
+                            min="0"
                             value={discountData.value}
                             onChange={handleChange}
-                            min="0"
                             required
                         />
                     </div>

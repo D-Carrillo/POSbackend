@@ -56,6 +56,7 @@ const SupplierPage = () => {
         setPeriod(e.target.value);
     };
 
+    
     const fetchSupplierReport = async () => {
         if (!user?.id) {
             setError('Supplier ID not available');
@@ -66,7 +67,7 @@ const SupplierPage = () => {
         setError(null);
 
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/reports/supplier/${user.id}`, {
+            const response = await axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/reports/supplier/${user.id}`, {
                 params: { period },
                 headers: {
                     'Cache-Control': 'no-cache',
@@ -110,7 +111,7 @@ const SupplierPage = () => {
 
     const fetchDiscounts = async () => {
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscounts/${user.id}`, {
+            const response = await axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscounts/${user.id}`, {
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache'
@@ -133,7 +134,7 @@ const SupplierPage = () => {
         setProductsError(null);
 
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/supplier/${user.id}`, {
+            const response = await axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/supplier/${user.id}`, {
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache'
@@ -150,20 +151,21 @@ const SupplierPage = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/user/${user.type}/${user.id}`, {
+            const response = await axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/user/${user.type}/${user.id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache'
                 }
             });
+
             setUserData(response.data);
         } catch (err) {
             console.error('Failed to fetch user data:', err);
         }
     };
 
-    const handleInputChange = (e) => {
+   const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUserData(prev => ({
             ...prev,
@@ -175,8 +177,8 @@ const SupplierPage = () => {
         try {
             const updateData = {
                 ...userData,
-                DOB: userData.DOB ? userData.DOB.split('T')[0] : null,
-                dob: userData.dob ? userData.DOB.split('T')[0] : null
+                //change from DOB to dob
+                dob: userData.dob ? userData.dob.split('T')[0] : null
             };
 
             Object.keys(updateData).forEach(key => {
@@ -186,7 +188,7 @@ const SupplierPage = () => {
             });
 
             const response = await axios.put(
-                `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/update/${user.type}/${user.id}`,
+                `pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/update/${user.type}/${user.id}`,
                 updateData,
                 {
                     headers: {
@@ -225,7 +227,7 @@ const SupplierPage = () => {
         if (!window.confirm(`Delete your ${user.type} account?`)) return;
 
         try {
-            const endpoint = `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/deletion/${user.type}/${user.id}`;
+            const endpoint = `pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/deletion/${user.type}/${user.id}`;
 
             const response = await axios.patch(endpoint, {
                 headers: {  'Authorization': `Bearer ${localStorage.getItem('token')}`}
@@ -245,7 +247,7 @@ const SupplierPage = () => {
         if (!window.confirm('Are you sure you want to delete this Product?')) return;
 
         try {
-            await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/deleteitem/${item_Id}`, {
+            await axios.post(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/deleteitem/${item_Id}`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
               }
@@ -284,7 +286,7 @@ const SupplierPage = () => {
     const saveChanges = async () => {
         try {
           await axios.put(
-            `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/modify/${editingItem}`,
+            `pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/modify/${editingItem}`,
             tempItemData,
             {
               headers: {
@@ -305,7 +307,7 @@ const SupplierPage = () => {
         console.log(discountData);
         try {
             await axios.put(
-                `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/addDiscount`,
+                `pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/addDiscount`,
                 discountData, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -325,7 +327,7 @@ const SupplierPage = () => {
         try {
             if (!window.confirm('Are you sure you want to delete this Discount?')) return;
             await axios.post(
-                `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/deleteDiscount/${discountId}`,
+                `pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/deleteDiscount/${discountId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -442,6 +444,7 @@ const SupplierPage = () => {
                     <>
                         <div className="profile-section">
                             <h2>Your Profile</h2>
+                            {console.log("thisthisthis", userData)}
                             {editMode ? (
                                 <div className="edit-profile-form">
                                     <div className="form-row">
@@ -497,6 +500,9 @@ const SupplierPage = () => {
                                                 value={userData.Email}
                                                 onChange={handleInputChange}
                                                 required
+                                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                                title="Please enter a valid email address"
+                                                maxLength={30}
                                             />
                                         </div>
                                         <div className="form-group">
@@ -504,6 +510,8 @@ const SupplierPage = () => {
                                             <input
                                                 type="tel"
                                                 name="Phone_Number"
+                                                pattern="\d{10}"
+                                                maxLength={10}
                                                 value={userData.Phone_Number}
                                                 onChange={handleInputChange}
                                                 required
@@ -513,8 +521,8 @@ const SupplierPage = () => {
                                             <label>Date of Birth</label>
                                             <input
                                                 type="date"
-                                                name="DOB"
-                                                value={userData.dob}
+                                                name="dob"
+                                                value={userData.dob ? userData.dob.split('T')[0] : ""}
                                                 onChange={handleInputChange}
                                             />
                                         </div>
@@ -562,11 +570,12 @@ const SupplierPage = () => {
                                             />
                                         </div>
                                         <div className="form-group">
-                                            <label>State*</label>
+                                            <label>State Abbreviation*</label>
                                             <input
                                                 type="text"
-                                                name="State"
-                                                value={userData.State}
+                                                name="state"
+                                                maxLength="5"
+                                                value={userData.state}
                                                 onChange={handleInputChange}
                                                 required
                                             />
@@ -578,6 +587,7 @@ const SupplierPage = () => {
                                                 name="Zip_code"
                                                 value={userData.Zip_code}
                                                 onChange={handleInputChange}
+                                                maxLength="5"
                                                 required
                                             />
                                         </div>
@@ -622,7 +632,7 @@ const SupplierPage = () => {
                                         </p>
                                         <p>
                                             {userData.City && `${userData.City}, `}
-                                            {userData.State} {userData.Zip_code}
+                                            {userData.state} {userData.Zip_code}
                                         </p>
                                         <p>{userData.Country}</p>
                                     </div>

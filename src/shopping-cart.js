@@ -59,7 +59,7 @@ const ShoppingCart = () => {
       try {
         const responses = await Promise.all(
           appliedCodes.map(code => 
-            axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscountsByName/${code}`)
+            axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscountsByName/${code}`)
           )
         );
         const details = responses.map(response => response.data[0]);
@@ -86,7 +86,7 @@ const ShoppingCart = () => {
     }
   
     try {
-      const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscountsByName/${discountCode}`);
+      const response = await axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscountsByName/${discountCode}`);
       const discountData = response.data[0][0]; 
 
       console.log(discountData);
@@ -106,7 +106,7 @@ const ShoppingCart = () => {
       }
   
       const updatedCodes = [...appliedCodes, discountData.Name]; 
-      console.log("thisshit", updatedCodes);
+      console.log(updatedCodes);
       setAppliedCodes(updatedCodes);
       localStorage.setItem("appliedDiscountCodes", JSON.stringify(updatedCodes));
   
@@ -148,6 +148,8 @@ const ShoppingCart = () => {
   const clearCart = () => {
     if (window.confirm('Are you sure you want to clear your cart?')) {
       setCartItems([]);
+      setAppliedCodes([]);
+      setDiscountDetails([]);
     }
   };
 
@@ -211,9 +213,6 @@ const ShoppingCart = () => {
     <div className="shopping-container">
       {/* Top Navigation */}
       <div className="top-nav">
-        <button className="toggle-sidebar" id="toggle-sidebar" title="Toggle Sidebar" onClick={toggleSidebar}>
-          <FontAwesomeIcon icon={sidebarCollapsed ? faExpand : faBars} />
-        </button>
         <div className="logo">
           <FontAwesomeIcon icon={faShoppingCart} />
           RetailPro

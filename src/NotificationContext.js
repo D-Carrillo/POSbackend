@@ -43,7 +43,7 @@ const fetchNotifications = async () => {
   
   try {
     console.log(`Making request to: /api/notifications/supplier/${supplierId}`);
-    const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/notifications/supplier/${supplierId}`);
+    const response = await axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/notifications/supplier/${supplierId}`);
     console.log("Notification response:", response.data);
     setNotifications(response.data);
     setUnreadCount(response.data.filter(notif => !notif.is_read).length);
@@ -70,7 +70,7 @@ const fetchNotifications = async () => {
 
   const markAsRead = async (notificationId) => {
     try {
-      await axios.put(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/notifications/${notificationId}/read`);
+      await axios.put(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/notifications/${notificationId}/read`);
       
       setNotifications(prev => 
         prev.map(notif => 

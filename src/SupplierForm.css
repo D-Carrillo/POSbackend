@@ -103,6 +103,13 @@
   .customerEntryForm button:hover {
     background-color: #0a377a;
   }
+  .error-text {
+    color: #d32f2f;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    display: block;
+  }
+  
 
   /* Responsive adjustments */
   @media (max-width: 600px) {

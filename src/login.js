@@ -15,7 +15,7 @@ const Login = () => {
         e.preventDefault();
         setError('');
         try {
-            const response = await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/login`, {
+            const response = await axios.post(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/login`, {
               email,
               password,
               typeOfUser

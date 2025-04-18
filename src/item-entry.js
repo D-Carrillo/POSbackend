@@ -20,7 +20,7 @@ const ItemEntryForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/item-entry`, {
+            const response = await axios.post(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/item-entry`, {
                 itemName, itemDescription, price, quantity, reorderThreshold, id, category, imageURL
             });
             if (response.data?.itemId) {
@@ -91,9 +91,10 @@ const ItemEntryForm = () => {
                         <div className="form-group">
                             <label>Price</label>
                             <input
-                                type="number"
+                                type="decimal"
                                 required
                                 value={price}
+                                min="0"
                                 onChange={(e) => setPrice(e.target.value)}
                             />
                         </div>

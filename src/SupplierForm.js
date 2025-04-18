@@ -31,7 +31,7 @@ const SupplierForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/supplier-entry-form`, {
+          const response = await axios.post(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/supplier-entry-form`, {
             company, firstName, middleInitial, lastName, phoneNumber, email, aptNum, houseNum, street, city, selectedState, zip, selectedCountry, password, dob
           });
           if (response.data?.user){
@@ -79,7 +79,7 @@ const SupplierForm = () => {
                             <label>Middle Initial</label>
                             <input
                                 type="text"
-                                maxLength={1}
+                                maxLength="1"
                                 value={middleInitial}
                                 onChange={(e) => setmiddleInitial(e.target.value)}
                             />
@@ -95,42 +95,69 @@ const SupplierForm = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label>Day of Birth</label>
+                            <label>Date of Birth</label>
                             <input
                                 type="date"
                                 required
                                 value={dob}
                                 onChange={(e) => setDob(e.target.value)}
+                                max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                                title="You must be at least 18 years old"
                             />
+                            {dob && new Date(dob) > new Date(new Date().setFullYear(new Date().getFullYear() - 18)) && (
+                                <span className="error-text">You must be at least 18 years old</span>
+                            )}
                         </div>
 
                         <div className="form-group">
                             <label>Phone Number</label>
                             <input
-                                type="tel"
+                                type="text"
                                 value={phoneNumber}
-                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value.replace(/\D/g, '');
+                                    if (value.length <= 10) setPhoneNumber(value);
+                                }}
                                 required
+                                pattern="\d{10}"
+                                maxLength={10}
                             />
+                            {phoneNumber.length !== 10 && phoneNumber.length > 0 && (
+                            <span className="error-text">Phone number must be 10 digits</span>
+                            )}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="email">Enter your example.com email</label>
+                            <label htmlFor="email">Enter your email</label>
                             <input
                                 type="email"
                                 id="email"
+                                value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                maxLength={30}
                                 required
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                title="Please enter a valid email address"
+                                maxLength={30}
                             />
+                            {email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email) && (
+                                <span className="error-text">Please enter a valid email</span>
+                            )}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="Password">Enter Password</label>
+                            <label htmlFor="password">Enter Password</label>
                             <input
                                 type="password"
-                                maxLength={30}
+                                id="password"
+                                value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
+                                minLength={8}
+                                maxLength={30}
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+                                title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 characters"
                             />
+                            {password.length > 0 && password.length < 8 && (
+                                <span className="error-text">Password must be at least 8 characters</span>
+                            )}
                         </div>
                     </div>
 
@@ -141,6 +168,7 @@ const SupplierForm = () => {
                             <label>Apartment Number</label>
                             <input
                                 type="number"
+                                min = "0"
                                 value={aptNum}
                                 onChange={(e) => setAptNum(e.target.value)}
                             />
@@ -177,11 +205,22 @@ const SupplierForm = () => {
                         <div className="form-group">
                             <label>Zip Code</label>
                             <input
-                                type="number"
-                                required
+                                type="text"
                                 value={zip}
-                                onChange={(e) => setZip(e.target.value)}
+                                onChange={(e) => {
+                                const value = e.target.value;
+                                if (/^\d{0,5}$/.test(value)) {
+                                    setZip(value);
+                                }
+                                }}
+                                required
+                                pattern="\d{5}"
+                                title="Please enter a 5-digit zip code"
+                                maxLength="5"
                             />
+                            {zip.length !== 5 && zip.length > 0 && (
+                                <span className="error-text">Zip code must be 5 digits</span>
+                            )}
                         </div>
                     </div>
 
@@ -223,6 +262,18 @@ const SupplierForm = () => {
                     <div className="form-group">
                         <button type="submit">Submit</button>
                     </div>
+                    {error && (
+                            <div className="error-message-for-login" style={{
+                            color: '#002366',
+                            padding: '10px',
+                            margin: '10px 0',
+                            border: '1px dark red',
+                            borderRadius: '4px',
+                            backgroundColor: '#ffebee'
+                            }}>
+                            ⚠️ Email or Phone Number already on the system
+                            </div>
+                        )}
                 </form>
             </div>
         </div>
