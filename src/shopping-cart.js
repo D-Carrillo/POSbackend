@@ -59,7 +59,7 @@ const ShoppingCart = () => {
       try {
         const responses = await Promise.all(
           appliedCodes.map(code => 
-            axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscountsByName/${code}`)
+            axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscountsByName/${code}`)
           )
         );
         const details = responses.map(response => response.data[0]);
@@ -86,7 +86,7 @@ const ShoppingCart = () => {
     }
   
     try {
-      const response = await axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscountsByName/${discountCode}`);
+      const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscountsByName/${discountCode}`);
       const discountData = response.data[0][0]; 
 
       console.log(discountData);

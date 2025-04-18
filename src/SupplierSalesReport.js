@@ -55,7 +55,7 @@ const SupplierSalesReport = ({ supplierId }) => {
       const { startDate, endDate } = getDateRange(period);
 
 
-      const response = await axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/supplier-sales/${supplierId}`, {
+      const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/supplier-sales/${supplierId}`, {
         params: { startDate, endDate }
       });
 

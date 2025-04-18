@@ -115,7 +115,7 @@ const Checkout = () => {
     try {
       
       //create a transaction
-      const transactionResponse = await axios.post(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/transaction`, {
+      const transactionResponse = await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/transaction`, {
         customer_id: user.id,
         total_cost: cart.totals.total,
         payment_method: 'Online',
@@ -158,7 +158,7 @@ const Checkout = () => {
       
         const finalPrice = originalSubtotal - discountValue;
       
-        await axios.post(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/transaction-item`, {
+        await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/transaction-item`, {
           transaction_id: transactionId,
           item_id: item.Item_ID,
           quantity: item.quantity,
@@ -172,7 +172,7 @@ const Checkout = () => {
         });
       
         // reduce item stock
-        await axios.put(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/stock/${item.Item_ID}`, {
+        await axios.put(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/stock/${item.Item_ID}`, {
           quantity: item.quantity
         }, {
           headers: {

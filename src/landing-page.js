@@ -31,7 +31,7 @@ function Landing() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items');
+        const response = await fetch('https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items');
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
         setProducts(data);
@@ -47,7 +47,7 @@ function Landing() {
   const handleSearch = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/search?query=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/search?query=${encodeURIComponent(searchQuery)}`);
       if (!response.ok) throw new Error('Failed to fetch search results');
       const data = await response.json();
 
@@ -68,7 +68,7 @@ function Landing() {
   const clearSearch = async () => {
     setSearchQuery('');
     try {
-      const response = await fetch(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items`);
+      const response = await fetch(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items`);
       if (!response.ok) throw new Error('Failed to fetch 2');
       const data = await response.json();
       setProducts(data);

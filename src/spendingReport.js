@@ -46,7 +46,7 @@ const SpendingReport = ({ userId }) => {
     setError(null);
       
     try {
-      const response = await axios.get(`pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/spending/${userId}`, {
+      const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/spending/${userId}`, {
         params: { 
           period,
           startDate: period === 'custom' ? startDate : undefined,
