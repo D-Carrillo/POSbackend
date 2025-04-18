@@ -20,7 +20,7 @@ const app = express();
 const corsOptions = {
   origin: [
     'https://gentle-desert-0fe0da310.6.azurestaticapps.net',
-    'http://localhost:3000' // Add if you have local development
+    'http://localhost:3000' 
   ],
   credentials: true,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
@@ -31,9 +31,9 @@ const corsOptions = {
     'Accept',
     'Authorization',
     'cache-control',
-    'pragma', // Explicitly add pragma
-    'x-auth-token', // Common auth header
-    'if-modified-since' // For cache control
+    'pragma', 
+    'x-auth-token', 
+    'if-modified-since' 
   ],
   exposedHeaders: [
     'Content-Length',
@@ -46,12 +46,11 @@ const corsOptions = {
   ],
   preflightContinue: false,
   optionsSuccessStatus: 204,
-  maxAge: 86400 // Cache preflight response for 24 hours
+  maxAge: 86400 
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Handle all OPTIONS requests
-
+app.options('*', cors(corsOptions)); 
 app.use(bodyParser.json());
 
 

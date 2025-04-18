@@ -47,7 +47,7 @@ exports.getCustomerReports = async (req, res) => {
         FROM transaction AS t
         WHERE t.Customer_ID = ?
         AND ${dateCondition}
-        AND t.Transaction_Status = 1
+        AND t.Transaction_Status in (0,1,2,3)
         GROUP BY period
         ORDER BY period DESC
     `;
@@ -114,6 +114,7 @@ exports.getSupplierReport = async (req, res) => {
         AND t.Transaction_Status = 1
         GROUP BY i.Item_ID
         ORDER BY total_revenue DESC
+
     `;
 
     try {
@@ -183,48 +184,70 @@ exports.getSpendingReport = async (req, res) => {
         end: dateFilter.lte.toISOString()
     });
 
+
     try {
         const [trend] = await db.promise().query(
             `SELECT
-                ANY_VALUE(CASE
-                    WHEN ? = 'day' THEN DATE_FORMAT(t.sale_time, '%H:00')
-                    WHEN ? = 'week' THEN DATE_FORMAT(t.sale_time, '%Y-%m-%d')
-                    WHEN ? = 'month' THEN DATE_FORMAT(t.sale_time, '%Y-%m-%d')
-                    WHEN ? = 'year' THEN DATE_FORMAT(t.sale_time, '%Y-%m')
-                    ELSE DATE_FORMAT(t.sale_time, '%Y-%m-%d')
-                END) AS period,
-                COUNT(t.Transaction_ID) AS transaction_count,
-                SUM(COALESCE(t.Total_cost, 0)) AS total_spent,
-                SUM(COALESCE(t.Total_items, 0)) AS total_items_sold,
-                AVG(COALESCE(t.Total_cost, 0)) AS average_order_value
-            FROM transaction t
-            WHERE t.Customer_ID = ?
-            AND t.sale_time BETWEEN ? AND ?
-            AND t.Transaction_Status = 1
-            GROUP BY
-                CASE
-                    WHEN ? = 'day' THEN DATE_FORMAT(t.sale_time, '%H')
-                    WHEN ? = 'week' THEN DATE_FORMAT(t.sale_time, '%Y-%m-%d')
-                    WHEN ? = 'month' THEN DATE_FORMAT(t.sale_time, '%Y-%m-%d')
-                    WHEN ? = 'year' THEN DATE_FORMAT(t.sale_time, '%Y-%m')
-                    ELSE DATE_FORMAT(t.sale_time, '%Y-%m-%d')
-                END
-            ORDER BY MIN(t.sale_time)`,
-            [ period, period, period, period, userID, dateFilter.gte, dateFilter.lte, period, period, period, period ] );
-
-        const [categories] = await db.promise().query(`
-            SELECT
+                period,
+                COUNT(Transaction_ID) AS transaction_count,
+                SUM(net_total) AS total_spent,
+                SUM(net_items) AS total_items_sold,
+                AVG(net_total) AS average_order_value
+            FROM (
+                SELECT
+                    CASE 
+                        WHEN ? = 'day' THEN DATE_FORMAT(t.sale_time, '%H:00')
+                        WHEN ? = 'week' THEN DATE_FORMAT(t.sale_time, '%Y-%m-%d')
+                        WHEN ? = 'month' THEN DATE_FORMAT(t.sale_time, '%Y-%m-%d')
+                        WHEN ? = 'year' THEN DATE_FORMAT(t.sale_time, '%Y-%m')
+                        ELSE DATE_FORMAT(t.sale_time, '%Y-%m-%d')
+                    END AS period,
+                    t.Transaction_ID,
+                    t.Total_cost - IFNULL((
+                        SELECT SUM(ri.refund_amount)
+                        FROM return_item ri
+                        WHERE ri.Transaction_ID = t.Transaction_ID
+                    ), 0) AS net_total,
+                    t.Total_items - IFNULL((
+                        SELECT COUNT(*)
+                        FROM return_item ri
+                        WHERE ri.Transaction_ID = t.Transaction_ID
+                    ), 0) AS net_items
+                FROM transaction t
+                WHERE t.Customer_ID = ?
+                AND t.sale_time BETWEEN ? AND ?
+                AND t.Transaction_Status IN (0,1,2,3)
+            ) AS calculated_data
+            GROUP BY period
+            ORDER BY MIN(period);`,
+            [period, period, period, period, userID, dateFilter.gte, dateFilter.lte]
+        );
+        const [categories] = await db.promise().query(
+            `SELECT
                 c.Category_Name AS category_name,
-                SUM(COALESCE(ti.Subtotal, 0)) AS total_spent
+                SUM(
+                    COALESCE(ti.Subtotal, 0) - 
+                    COALESCE(
+                        (SELECT SUM(ri.refund_amount)
+                        FROM return_item ri
+                        JOIN transaction_item returned_ti ON ri.Item_ID = returned_ti.Item_ID 
+                            AND ri.Transaction_ID = returned_ti.Transaction_ID
+                        WHERE returned_ti.Transaction_ID = t.Transaction_ID
+                            AND returned_ti.Item_ID = ti.Item_ID
+                        ), 0
+                    )
+                ) AS total_spent
             FROM transaction t
             JOIN transaction_item ti ON t.Transaction_ID = ti.Transaction_ID
             JOIN item i ON ti.Item_ID = i.Item_ID
             JOIN category c ON i.Category_ID = c.Category_ID
             WHERE t.Customer_ID = ?
-            AND t.Transaction_Status = 1
+            AND t.Transaction_Status in (0,1,2,3)
             AND t.sale_time BETWEEN ? AND ?
             GROUP BY c.Category_Name
-        `, [userID, dateFilter.gte, dateFilter.lte]);
+            ORDER BY total_spent DESC`,
+            [userID, dateFilter.gte, dateFilter.lte]
+        );
 
         console.log("Found spending trend records:", trend.length);
         console.log("Found category records:", categories.length);
