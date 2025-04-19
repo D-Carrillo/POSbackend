@@ -13,7 +13,7 @@ const SpendingReport = ({ userId }) => {
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = window.APP_CONFIG.API_URL;
 
   useEffect(() => {
     if (period !== 'custom') {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './login.css';
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = window.APP_CONFIG.API_URL;
 
 
 const Login = () => {

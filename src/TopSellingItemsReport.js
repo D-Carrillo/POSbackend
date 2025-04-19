@@ -8,7 +8,7 @@ const TopSellingItemsReport = ({ supplierId, siteWide = false }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [limit, setLimit] = useState(10);
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = window.APP_CONFIG.API_URL;
 
   useEffect(() => {
     fetchTopSellingItems();

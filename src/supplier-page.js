@@ -51,7 +51,7 @@ const SupplierPage = () => {
         Zip_code: '',
         DOB: ''
     });
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = window.APP_CONFIG.API_URL;
 
     
     const fetchSupplierReport = async () => {

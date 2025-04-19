@@ -22,7 +22,7 @@ const CustomerEntryForm = () => {
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedState, setSelectedState] = useState('');
     const [error, setError] = useState('');
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = window.APP_CONFIG.API_URL;
 
     const countries = Country.getAllCountries();
     const state = selectedCountry ? State.getStatesOfCountry(selectedCountry) : [];

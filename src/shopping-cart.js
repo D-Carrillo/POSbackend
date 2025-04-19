@@ -18,7 +18,7 @@ import {
   faCcAmex, 
   faCcPaypal 
 } from '@fortawesome/free-brands-svg-icons';
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = window.APP_CONFIG.API_URL;
 
 const ShoppingCart = () => {
   const user = JSON.parse(localStorage.getItem('user'));

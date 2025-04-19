@@ -7,7 +7,7 @@ const DiscountReport = ({ supplierId }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [logOutput, setLogOutput] = useState([]);
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = window.APP_CONFIG.API_URL;
      const [d_summary, setDsummary] = useState({
         discountLoss: 0,
         totalDiscountedItems: 0,

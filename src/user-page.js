@@ -43,7 +43,7 @@ const UserPage = () => {
         DOB: '',
         Payment_method: 'Card'
     });
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = window.APP_CONFIG.API_URL;
 
     useEffect(() => { 
             fetchCustomerReports();

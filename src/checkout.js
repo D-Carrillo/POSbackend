@@ -5,7 +5,7 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import './checkout.css';
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = window.APP_CONFIG.API_URL;
 
 const Checkout = () => {
   const user = JSON.parse(localStorage.getItem('user'));

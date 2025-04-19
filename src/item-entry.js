@@ -12,7 +12,7 @@ const ItemEntryForm = () => {
     const [reorderThreshold, setReorderThreshold] = useState(null);
     const [category, setCategory] = useState(null);
     const [imageURL, setImageURL] = useState('');
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = window.APP_CONFIG.API_URL;
     const [error, setError] = useState('');
     
 

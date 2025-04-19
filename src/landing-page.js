@@ -7,7 +7,7 @@ import {
   faShoppingCart,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = window.APP_CONFIG.API_URL;
 
 function Landing() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));

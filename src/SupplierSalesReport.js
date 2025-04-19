@@ -13,7 +13,7 @@ const SupplierSalesReport = ({ supplierId }) => {
     totalUnitsSold: 0,
     totalRevenue: 0
   });
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = window.APP_CONFIG.API_URL;
   useEffect(() => {
     fetchSalesReport();
   }, [supplierId, period]);

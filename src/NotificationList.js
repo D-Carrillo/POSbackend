@@ -6,7 +6,7 @@ import './Notifications.css';
 const NotificationList = ({ onClose }) => {
   const { notifications, loading, error, markAsRead, fetchNotifications } = useNotifications();
   const [actedNotifications, setActedNotifications] = React.useState({});
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = window.APP_CONFIG.API_URL;
 
   if (loading) {
     return <div className="notification-list-container">Loading notifications...</div>;
