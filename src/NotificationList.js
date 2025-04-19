@@ -6,6 +6,7 @@ import './Notifications.css';
 const NotificationList = ({ onClose }) => {
   const { notifications, loading, error, markAsRead, fetchNotifications } = useNotifications();
   const [actedNotifications, setActedNotifications] = React.useState({});
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   if (loading) {
     return <div className="notification-list-container">Loading notifications...</div>;
@@ -27,7 +28,7 @@ const NotificationList = ({ onClose }) => {
 
   const handleAcceptReturn = async (notification_id) => {
     try {
-      await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/returns/accept`, { notification_id });
+      await axios.post(`${apiUrl}/api/returns/accept`, { notification_id });
       alert('Return accepted successfully!');
       setActedNotifications(prev => ({...prev, [notification_id]: 'accepted'}));
       fetchNotifications(); // Refresh notifications
@@ -39,7 +40,7 @@ const NotificationList = ({ onClose }) => {
   
   const handleDeclineReturn = async (notification_id) => {
     try {
-      await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/returns/decline`, { notification_id });
+      await axios.post(`${apiUrl}/api/returns/decline`, { notification_id });
       alert('Return declined successfully!');
       setActedNotifications(prev => ({...prev, [notification_id]: 'declined'}));
       fetchNotifications(); 

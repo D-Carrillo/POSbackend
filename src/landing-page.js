@@ -4,18 +4,10 @@ import './landing-page.css';
 import NotificationBell from './NotificationBell';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faBars,
-  faExpand,
   faShoppingCart,
-  faHome,
-  faTag,
   faUsers,
-  faChartBar,
-  faBoxes,
-  faPercent,
-  faCog,
-  faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function Landing() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -31,7 +23,7 @@ function Landing() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items');
+        const response = await fetch(`${apiUrl}/api/items`);
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
         setProducts(data);
@@ -47,7 +39,7 @@ function Landing() {
   const handleSearch = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/search?query=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(`${apiUrl}/api/items/search?query=${encodeURIComponent(searchQuery)}`);
       if (!response.ok) throw new Error('Failed to fetch search results');
       const data = await response.json();
 
@@ -68,7 +60,7 @@ function Landing() {
   const clearSearch = async () => {
     setSearchQuery('');
     try {
-      const response = await fetch(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items`);
+      const response = await fetch(`${apiUrl}/api/items`);
       if (!response.ok) throw new Error('Failed to fetch 2');
       const data = await response.json();
       setProducts(data);

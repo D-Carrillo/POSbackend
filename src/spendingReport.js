@@ -13,6 +13,7 @@ const SpendingReport = ({ userId }) => {
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (period !== 'custom') {
@@ -46,7 +47,7 @@ const SpendingReport = ({ userId }) => {
     setError(null);
       
     try {
-      const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/spending/${userId}`, {
+      const response = await axios.get(`${apiUrl}/api/spending/${userId}`, {
         params: { 
           period,
           startDate: period === 'custom' ? startDate : undefined,

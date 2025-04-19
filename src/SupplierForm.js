@@ -22,6 +22,7 @@ const SupplierForm = () => {
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedState, setSelectedState] = useState('');
     const [error, setError] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL;
     
 
     const countries = Country.getAllCountries();
@@ -31,7 +32,7 @@ const SupplierForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/supplier-entry-form`, {
+          const response = await axios.post(`${apiUrl}/api/supplier-entry-form`, {
             company, firstName, middleInitial, lastName, phoneNumber, email, aptNum, houseNum, street, city, selectedState, zip, selectedCountry, password, dob
           });
           if (response.data?.user){

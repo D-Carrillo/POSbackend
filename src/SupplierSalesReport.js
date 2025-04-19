@@ -13,7 +13,7 @@ const SupplierSalesReport = ({ supplierId }) => {
     totalUnitsSold: 0,
     totalRevenue: 0
   });
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   useEffect(() => {
     fetchSalesReport();
   }, [supplierId, period]);
@@ -55,7 +55,7 @@ const SupplierSalesReport = ({ supplierId }) => {
       const { startDate, endDate } = getDateRange(period);
 
 
-      const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/supplier-sales/${supplierId}`, {
+      const response = await axios.get(`${apiUrl}/api/supplier-sales/${supplierId}`, {
         params: { startDate, endDate }
       });
 

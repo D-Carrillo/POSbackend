@@ -22,7 +22,7 @@ const CustomerEntryForm = () => {
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedState, setSelectedState] = useState('');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const countries = Country.getAllCountries();
     const state = selectedCountry ? State.getStatesOfCountry(selectedCountry) : [];
@@ -31,7 +31,7 @@ const CustomerEntryForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/customer-entry-form`, {
+          const response = await axios.post(`${apiUrl}/api/customer-entry-form`, {
             firstName, middleInitial, lastName, phoneNumber, email, aptNum, houseNum, street, city, selectedState, zip, selectedCountry, dob, payment, password
           });
           if (response.data?.user){

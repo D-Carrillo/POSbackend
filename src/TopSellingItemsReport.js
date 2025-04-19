@@ -8,6 +8,7 @@ const TopSellingItemsReport = ({ supplierId, siteWide = false }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [limit, setLimit] = useState(10);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchTopSellingItems();
@@ -53,9 +54,9 @@ const TopSellingItemsReport = ({ supplierId, siteWide = false }) => {
       
       
       if (!siteWide && supplierId) {
-        endpoint = `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/supplier/${supplierId}/top-selling-items`;
+        endpoint = `${apiUrl}/api/supplier/${supplierId}/top-selling-items`;
       } else {
-        endpoint = `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/top-selling-items`;
+        endpoint = `${apiUrl}/api/top-selling-items`;
         
         if (!siteWide && supplierId) {
           params.supplierId = supplierId;

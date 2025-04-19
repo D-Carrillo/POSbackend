@@ -5,6 +5,7 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import './checkout.css';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Checkout = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -115,7 +116,7 @@ const Checkout = () => {
     try {
       
       //create a transaction
-      const transactionResponse = await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/transaction`, {
+      const transactionResponse = await axios.post(`${apiUrl}/api/transaction`, {
         customer_id: user.id,
         total_cost: cart.totals.total,
         payment_method: 'Online',
@@ -158,7 +159,7 @@ const Checkout = () => {
       
         const finalPrice = originalSubtotal - discountValue;
       
-        await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/transaction-item`, {
+        await axios.post(`${apiUrl}/api/transaction-item`, {
           transaction_id: transactionId,
           item_id: item.Item_ID,
           quantity: item.quantity,
@@ -172,7 +173,7 @@ const Checkout = () => {
         });
       
         // reduce item stock
-        await axios.put(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/stock/${item.Item_ID}`, {
+        await axios.put(`${apiUrl}/api/items/stock/${item.Item_ID}`, {
           quantity: item.quantity
         }, {
           headers: {

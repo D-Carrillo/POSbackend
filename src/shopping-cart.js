@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faBars, 
-  faExpand, 
   faShoppingCart,   
   faTrash, 
   faArrowLeft, 
@@ -20,6 +18,7 @@ import {
   faCcAmex, 
   faCcPaypal 
 } from '@fortawesome/free-brands-svg-icons';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const ShoppingCart = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -59,7 +58,7 @@ const ShoppingCart = () => {
       try {
         const responses = await Promise.all(
           appliedCodes.map(code => 
-            axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscountsByName/${code}`)
+            axios.get(`${apiUrl}/api/getDiscountsByName/${code}`)
           )
         );
         const details = responses.map(response => response.data[0]);
@@ -86,7 +85,7 @@ const ShoppingCart = () => {
     }
   
     try {
-      const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscountsByName/${discountCode}`);
+      const response = await axios.get(`${apiUrl}/api/getDiscountsByName/${discountCode}`);
       const discountData = response.data[0][0]; 
 
       console.log(discountData);

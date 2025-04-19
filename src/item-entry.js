@@ -12,15 +12,15 @@ const ItemEntryForm = () => {
     const [reorderThreshold, setReorderThreshold] = useState(null);
     const [category, setCategory] = useState(null);
     const [imageURL, setImageURL] = useState('');
-
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
+    
 
     {/* Function to place all the values into item once submit  is hit */ }
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/item-entry`, {
+            const response = await axios.post(`${apiUrl}/api/items/item-entry`, {
                 itemName, itemDescription, price, quantity, reorderThreshold, id, category, imageURL
             });
             if (response.data?.itemId) {

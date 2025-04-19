@@ -43,6 +43,7 @@ const UserPage = () => {
         DOB: '',
         Payment_method: 'Card'
     });
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => { 
             fetchCustomerReports();
@@ -56,7 +57,7 @@ const UserPage = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/reports/${period}/${user.id}`, {
+            const response = await axios.get(`${apiUrl}/api/reports/${period}/${user.id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -72,7 +73,7 @@ const UserPage = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/user/${user.type}/${user.id}`, {
+            const response = await axios.get(`${apiUrl}/auth/user/${user.type}/${user.id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -87,7 +88,7 @@ const UserPage = () => {
     const fetchTransactions = async () => {
         if (!user?.id) return;
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/userTransactions/${user.id}`, {
+            const response = await axios.get(`${apiUrl}/api/userTransactions/${user.id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -149,7 +150,7 @@ const UserPage = () => {
     
             console.log('Sending update:', updateData); 
             const response = await axios.put(
-                `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/update/${user.type}/${user.id}`,
+                `${apiUrl}/auth/update/${user.type}/${user.id}`,
                 updateData,
                 {
                     headers: {
@@ -193,7 +194,7 @@ const UserPage = () => {
 
             
         try {
-            const endpoint = `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/deletion/${user.type}/${user.id}`;
+            const endpoint = `${apiUrl}/auth/deletion/${user.type}/${user.id}`;
 
             const response = await axios.patch(endpoint, {
                 headers: {  'Authorization': `Bearer ${localStorage.getItem('token')}`}
@@ -216,7 +217,7 @@ const UserPage = () => {
 
         try {
             const response = await axios.post(
-                `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/returns`, {
+                `${apiUrl}/api/returns`, {
                     transaction_id: transactionId,
                     item_id: itemId,
                     return_reason: returnReason
@@ -240,7 +241,7 @@ const UserPage = () => {
 
         try {
             const response = await axios.get(
-                `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getReturns`, {
+                `${apiUrl}/api/getReturns`, {
                     headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
                 }
             );

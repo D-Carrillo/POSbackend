@@ -51,10 +51,7 @@ const SupplierPage = () => {
         Zip_code: '',
         DOB: ''
     });
-
-    const handlePeriodChange = (e) => {
-        setPeriod(e.target.value);
-    };
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     
     const fetchSupplierReport = async () => {
@@ -67,7 +64,7 @@ const SupplierPage = () => {
         setError(null);
 
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/reports/supplier/${user.id}`, {
+            const response = await axios.get(`${apiUrl}/api/reports/supplier/${user.id}`, {
                 params: { period },
                 headers: {
                     'Cache-Control': 'no-cache',
@@ -111,7 +108,7 @@ const SupplierPage = () => {
 
     const fetchDiscounts = async () => {
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/getDiscounts/${user.id}`, {
+            const response = await axios.get(`${apiUrl}/api/getDiscounts/${user.id}`, {
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache'
@@ -134,7 +131,7 @@ const SupplierPage = () => {
         setProductsError(null);
 
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/supplier/${user.id}`, {
+            const response = await axios.get(`${apiUrl}/api/items/supplier/${user.id}`, {
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache'
@@ -151,7 +148,7 @@ const SupplierPage = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/user/${user.type}/${user.id}`, {
+            const response = await axios.get(`${apiUrl}/auth/user/${user.type}/${user.id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     'Cache-Control': 'no-cache',
@@ -188,7 +185,7 @@ const SupplierPage = () => {
             });
 
             const response = await axios.put(
-                `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/update/${user.type}/${user.id}`,
+                `${apiUrl}/auth/update/${user.type}/${user.id}`,
                 updateData,
                 {
                     headers: {
@@ -227,7 +224,7 @@ const SupplierPage = () => {
         if (!window.confirm(`Delete your ${user.type} account?`)) return;
 
         try {
-            const endpoint = `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/auth/deletion/${user.type}/${user.id}`;
+            const endpoint = `${apiUrl}/auth/deletion/${user.type}/${user.id}`;
 
             const response = await axios.patch(endpoint, {
                 headers: {  'Authorization': `Bearer ${localStorage.getItem('token')}`}
@@ -247,7 +244,7 @@ const SupplierPage = () => {
         if (!window.confirm('Are you sure you want to delete this Product?')) return;
 
         try {
-            await axios.post(`https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/deleteitem/${item_Id}`, {
+            await axios.post(`${apiUrl}/api/items/deleteitem/${item_Id}`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
               }
@@ -286,7 +283,7 @@ const SupplierPage = () => {
     const saveChanges = async () => {
         try {
           await axios.put(
-            `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/items/modify/${editingItem}`,
+            `${apiUrl}/api/items/modify/${editingItem}`,
             tempItemData,
             {
               headers: {
@@ -307,7 +304,7 @@ const SupplierPage = () => {
         console.log(discountData);
         try {
             await axios.put(
-                `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/addDiscount`,
+                `${apiUrl}/api/addDiscount`,
                 discountData, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -327,7 +324,7 @@ const SupplierPage = () => {
         try {
             if (!window.confirm('Are you sure you want to delete this Discount?')) return;
             await axios.post(
-                `https://pointofsalebackend-cfayfdbafzeqfdcd.eastus-01.azurewebsites.net/api/deleteDiscount/${discountId}`,
+                `${apiUrl}/api/deleteDiscount/${discountId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
