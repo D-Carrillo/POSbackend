@@ -15,7 +15,7 @@ const Login = () => {
         e.preventDefault();
         setError('');
         try {
-            const response = await axios.post(`https://${REACT_APP_API_URL}/auth/login`, {
+            const response = await axios.post(`${REACT_APP_API_URL}/auth/login`, {
               email,
               password,
               typeOfUser
