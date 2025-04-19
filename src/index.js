@@ -4,6 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+if (!process.env.REACT_APP_API_URL) {
+  process.env = {
+    ...process.env,
+    REACT_APP_API_URL: window.APP_CONFIG?.API_URL
+  };
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
