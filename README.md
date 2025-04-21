@@ -43,10 +43,12 @@ This project is a Point-of-Sale (POS) based marketplace where suppliers can list
   - Node.js
 
 ## ⚙️ Installation for Local Use:
+## MUST HAVE AN ACTIVE AND BUILT DATABASE (MySQL)
   1. Clone the repository to your local machine.
-  2. Navigate to server folder and use "npm install express".
-  3. Navigate to the POS folder and use "npm install react-scripts", "npm install react-icons".
-  4. Start application using "npm start".
+  2. Change API backend to localhost.
+  3. Navigate to server folder and use "npm install express".
+  4. Navigate to the POS folder and use "npm install react-scripts", "npm install react-icons".
+  5. Start application using "npm start".
 
 ## 🌐 Webstie Link:
 https://gentle-desert-0fe0da310.6.azurestaticapps.net/
