@@ -46,8 +46,8 @@ This project is a Point-of-Sale (POS) based marketplace where suppliers can list
 ## MUST HAVE AN ACTIVE AND BUILT DATABASE (MySQL)
   1. Clone the repository to your local machine.
   2. Change API backend to localhost.
-  3. Navigate to server folder and use "npm install express".
-  4. Navigate to the POS folder and use "npm install react-scripts", "npm install react-icons".
+  3. Navigate to server folder and use "npm install express" in the terminal.
+  4. Navigate to the POS folder and use "npm install react-scripts", "npm install react-icons" in the terminal.
   5. Start application using "npm start".
 
 ## 🌐 Webstie Link:
