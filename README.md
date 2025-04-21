@@ -58,5 +58,5 @@ This project is a Point-of-Sale (POS) based marketplace where suppliers can list
 https://gentle-desert-0fe0da310.6.azurestaticapps.net/
 
 
-
+# ↖️ Backend files are located in the master branch.
   
