@@ -52,7 +52,7 @@ This project is a Point-of-Sale (POS) based marketplace where suppliers can list
   4. Navigate to server folder and use "npm install express" in the terminal.
   5. Navigate to the POS folder and use "npm install react-scripts", "npm install react-icons" in the terminal.
   6. Start application using "npm start".
-  7. If facing issues, use the link to local host repository: https://github.com/D-Carrillo/POS11-Uma.git. (**Requires no backend changes except for database login information in the db.js file)
+  7. If facing issues, use the link to local host repository: https://github.com/D-Carrillo/POS11-Uma.git. (**Requires no backend changes except for database login information in the db.js file**)
 
 ## 🌐 Webstie Link:
 https://gentle-desert-0fe0da310.6.azurestaticapps.net/
