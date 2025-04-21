@@ -13,6 +13,7 @@ This project is a Point-of-Sale (POS) based marketplace where suppliers can list
  
 - **Inventory Management**
   - Add, edit, or delete products in your inventory.
+  - Add, edit, or delete discount codes.
   - Organize products by categories.
   - Track product quantities and receive low stock alerts.
   - Generate reports.
@@ -26,6 +27,7 @@ This project is a Point-of-Sale (POS) based marketplace where suppliers can list
 - **Supplier Management**
   - Generate sales reports by date, product, or category.
   - Visualize sales data with charts and graphs.
+  - Accept or decline return items.
  
 - **Admin Management**
   - Manage system-wide settings and user roles.
@@ -46,9 +48,11 @@ This project is a Point-of-Sale (POS) based marketplace where suppliers can list
 ## MUST HAVE AN ACTIVE AND BUILT DATABASE (MySQL)
   1. Clone the repository to your local machine.
   2. Change API backend to localhost.
-  3. Navigate to server folder and use "npm install express" in the terminal.
-  4. Navigate to the POS folder and use "npm install react-scripts", "npm install react-icons" in the terminal.
-  5. Start application using "npm start".
+  3. Start your database, and add user login to the backend in the db.js file under the server folder.
+  4. Navigate to server folder and use "npm install express" in the terminal.
+  5. Navigate to the POS folder and use "npm install react-scripts", "npm install react-icons" in the terminal.
+  6. Start application using "npm start".
+  7. If facing issues, use the link to local host repository: https://github.com/D-Carrillo/POS11-Uma.git. (**Requires no backend changes except for database login information in the db.js file)
 
 ## 🌐 Webstie Link:
 https://gentle-desert-0fe0da310.6.azurestaticapps.net/
