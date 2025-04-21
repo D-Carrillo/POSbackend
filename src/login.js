@@ -29,7 +29,7 @@ const Login = () => {
                 
                 
                 if (response.data.user.is_admin) {
-                    window.location.href = '/users'; 
+                    window.location.href = '/customers'; 
                 } else {
                     window.location.href = '/'; 
                 }
