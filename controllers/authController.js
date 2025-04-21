@@ -36,7 +36,35 @@ exports.login = (req, res) => {
         }
       });
     });
-  };
+};
+
+// exports.adminLogin = (req, res) => {
+//   const {password, email} = req.body.formData;
+//   console.log(password, email);
+
+//   db.query(`SELECT name, last_Name, password, admin_ID FROM administrators WHERE email = ? And is_deleted = 0`, [email], (err, results) => {
+//     if (err) return res.status(500).send(err);
+//     console.log(results);
+//     if (results.length === 0) return res.status(401).send('Account not found');
+
+//     console.log(results);
+//     const user = results[0];
+//     console.log("password", user.password);
+//     if (user.password !== password) {
+//       return res.status(401).send('Invalid credentials');
+//     }
+
+//     res.json({
+//       success: true,
+//       user: {
+//         name: user.name,
+//         last_Name: user.last_Name,
+//         admin_ID: user.admin_ID,
+//       }
+//     });
+//   });
+
+// }
 
 exports.getUser = async (req, res) => {
   try {
