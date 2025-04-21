@@ -13,6 +13,7 @@ This project is a Point-of-Sale (POS) based marketplace where suppliers can list
  
 - **Inventory Management**
   - Add, edit, or delete products in your inventory.
+  - Add, edit, or delete discount codes.
   - Organize products by categories.
   - Track product quantities and receive low stock alerts.
   - Generate reports.
@@ -26,6 +27,7 @@ This project is a Point-of-Sale (POS) based marketplace where suppliers can list
 - **Supplier Management**
   - Generate sales reports by date, product, or category.
   - Visualize sales data with charts and graphs.
+  - Accept or decline return items.
  
 - **Admin Management**
   - Manage system-wide settings and user roles.
