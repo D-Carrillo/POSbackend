@@ -12,6 +12,7 @@ const Login = () => {
     const [typeOfUser, setTypeOfUser] = useState('customer');
     const [error, setError] = useState('');
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -22,15 +23,22 @@ const Login = () => {
               typeOfUser
             });
             
-            if (response.data?.user){
+            if (response.data?.user) {
+                
                 localStorage.setItem('user', JSON.stringify(response.data.user));
-                window.location.href = '/';
-            }else {
+                
+                
+                if (response.data.user.is_admin) {
+                    window.location.href = '/users'; 
+                } else {
+                    window.location.href = '/'; 
+                }
+            } else {
                 throw new Error('No user data received');
             }
         } catch (err) {
             const errorMessage = err.response?.data?.message || err.message || 'Login failed';
-            setError (errorMessage);
+            setError(errorMessage);
         }
     };
 
@@ -42,7 +50,7 @@ const Login = () => {
                     <img src="store.jpg" alt="Image of a store" />
                 </div>
 
-                {/*the actual login part */}
+                {/*Login part */}
                 <div className = "login-container">
                     <h2>Login</h2>
                     <div className = "tabs">

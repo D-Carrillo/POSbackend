@@ -508,7 +508,7 @@ const UserPage = () => {
                             onClick={toggleTransactionHistory}
                             className='transaction-history-toggle'
                         >
-                            {showTransactionHistory ? 'Hide' : 'Show'} Transaction History
+                            {showTransactionHistory ? 'Click to Hide' : 'Click to Show'} Transaction History
                         </button>
                     
 

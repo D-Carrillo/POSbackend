@@ -11,6 +11,10 @@ import SupplierForm from './SupplierForm';
 import SupplierPage from './supplier-page';
 import ItemEntryForm from './item-entry';
 import { NotificationProvider } from './NotificationContext';
+import AdminUsers from './adminUsers';
+import AdminProducts from './adminProducts';
+import AdminSuppliers from './adminSuppliers';
+import AdminLayout from './adminLayout';
 
 function App() {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -28,6 +32,13 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/supplier-entry-form" element={!user ? <SupplierForm /> : <Navigate to="/" />} />
           <Route path="/item-entry" element={ <ItemEntryForm /> } />
+
+           {/* Admin Routes */}
+          <Route element={<AdminLayout />}>
+            <Route path="/customers" element={<AdminUsers />} />
+            <Route path="/products" element={<AdminProducts />} />
+            <Route path="/suppliers" element={<AdminSuppliers />} />
+          </Route>
         </Routes>
       </Router>
     </NotificationProvider>
