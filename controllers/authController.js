@@ -2,73 +2,100 @@
 const db = require('../config/db');
 
 exports.login = (req, res) => {
-    const { email, password, typeOfUser } = req.body;
+  const { email, password, typeOfUser } = req.body;
+
+  let table, idField;
   
-    let table, idField;
+  if (typeOfUser === 'customer') {
+    table = 'customer';
+    idField = 'Customer_ID';
+  } else if (typeOfUser === 'supplier') {
+    table = 'supplier';
+    idField = 'Supplier_ID';
+  }
+
+  const query = `SELECT first_name, last_Name, password, ${idField} FROM ${table} WHERE Email = ? AND is_deleted = 0`;
+  
+  db.query(query, [email], (err, results) => {
+    if (err) return res.status(500).json({ message: 'Database error' });
     
-    if (typeOfUser === 'customer') {
-      table = 'customer';
-      idField = 'Customer_ID'; // Column name for customer ID
-    } else if (typeOfUser === 'supplier') {
-      table = 'supplier';
-      idField = 'Supplier_ID'; // Column name for supplier ID
+    if (results.length === 0 && typeOfUser === 'supplier') {
+    const adminQuery = `SELECT * FROM administrators WHERE email = ? AND is_deleted = 0`; 
+  
+  db.query(adminQuery, [email], (adminErr, adminResults) => {
+    if (adminErr) {
+      console.error('Admin query error:', adminErr);
+      return res.status(500).json({ message: 'Database error' });
     }
-  
-    const query = `SELECT first_name, last_Name, password, ${idField} FROM ${table} WHERE Email = ? And is_deleted = 0`;
     
-    db.query(query, [email], (err, results) => {
-      if (err) return res.status(500).send(err);
-      if (results.length === 0) return res.status(401).send('Account not found');
-  
-      const user = results[0];
-      
-      if (user.password !== password) {
-        return res.status(401).send('Invalid credentials');
+    if (adminResults.length === 0) {
+      return res.status(401).json({ message: 'Account not found' });
+    }
+    
+    const admin = adminResults[0];
+    
+    if (admin.password !== password) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    res.json({
+      success: true,
+      user: {
+        first_name: admin.name,
+        middle_Initial: admin.middle_Initial,
+        last_Name: admin.last_Name,
+        id: admin.admin_ID,
+        type: 'admin',
+        is_admin: true
       }
-  
-      res.json({
-        success: true,
-        user: {
-          first_name: user.first_name,
-          last_Name: user.last_Name,
-          id: user[idField],
-          type: table
-        }
-      });
     });
+  });
+  return;
+}
+
+    if (results.length === 0) {
+      return res.status(401).json({ message: 'Account not found' });
+    }
+    
+
+    const user = results[0];
+    
+    if (user.password !== password) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    
+    res.json({
+      success: true,
+      user: {
+        first_name: user.first_name,
+        last_Name: user.last_Name,
+        id: user[idField],
+        type: table,
+        is_admin: false
+      }
+    });
+  });
 };
 
-// exports.adminLogin = (req, res) => {
-//   const {password, email} = req.body.formData;
-//   console.log(password, email);
-
-//   db.query(`SELECT name, last_Name, password, admin_ID FROM administrators WHERE email = ? And is_deleted = 0`, [email], (err, results) => {
-//     if (err) return res.status(500).send(err);
-//     console.log(results);
-//     if (results.length === 0) return res.status(401).send('Account not found');
-
-//     console.log(results);
-//     const user = results[0];
-//     console.log("password", user.password);
-//     if (user.password !== password) {
-//       return res.status(401).send('Invalid credentials');
-//     }
-
-//     res.json({
-//       success: true,
-//       user: {
-//         name: user.name,
-//         last_Name: user.last_Name,
-//         admin_ID: user.admin_ID,
-//       }
-//     });
-//   });
-
-// }
 
 exports.getUser = async (req, res) => {
   try {
     const { id, type } = req.params;
+
+    if (type === 'admin') {
+      const query = 'SELECT * FROM administrators WHERE admin_ID = ?';
+      db.query(query, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database error' });
+        if (results.length === 0) return res.status(404).json({ error: 'Admin not found' });
+        
+        const admin = results[0];
+        delete admin.password;
+        
+        res.json(admin);
+      });
+      return;
+    }
+    
     const table = type === 'customer' ? 'customer' : 'supplier';
     const idField = type === 'customer' ? 'Customer_ID' : 'Supplier_ID';
     

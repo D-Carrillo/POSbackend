@@ -567,3 +567,102 @@ exports.getDiscountReport = async (req, res) => {
         res.status(500).json({ error: 'Failed to generate sales summary report', details: error.message });
     }
 };
+
+exports.getSuppliers = async (req, res) => {
+    try {
+        console.log("Getting Suppliers:");
+
+        const query = `
+            SELECT
+                supplier_id,
+                company_name,
+                email,
+                phone_number,
+                is_deleted
+            FROM
+                supplier`;
+
+
+        const [results] = await db.promise().query(query);
+
+
+        res.status(200).json({
+            success: true,
+            data: {
+                supplierData: results,
+            }
+        });
+    } catch (error) {
+        console.error('Error generating suppliers:', error);
+        res.status(500).json({ error: 'Failed to generate suppliers', details: error.message });
+    }
+};
+
+exports.deleteSupplier = async (req, res) => {
+    try {
+        const supplierId = req.params.id;
+
+        // Delete items first
+        await db.promise().query(
+            `UPDATE item SET is_deleted = TRUE WHERE supplier_id = ?`,
+            [supplierId]
+        );
+
+        // Then delete the supplier
+        const [result] = await db.promise().query(
+            `UPDATE supplier SET is_deleted = TRUE WHERE supplier_id = ?`,
+            [supplierId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Supplier not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Supplier deleted successfully'
+        });
+    } catch (error) {
+        console.error('Error deleting supplier:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to delete supplier',
+            details: error.message
+        });
+    }
+};
+
+exports.restoreSupplier = async (req, res) => {
+    try {
+        const supplierId = req.params.id;
+
+        const query = `
+            UPDATE supplier
+            SET is_deleted = 0
+            WHERE supplier_id = ?`;
+
+        const [result] = await db.promise().query(query, [supplierId]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Supplier not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Supplier restored successfully'
+        });
+    } catch (error) {
+        console.error('Error restoring supplier:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to restore supplier',
+            details: error.message
+        });
+    }
+};

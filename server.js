@@ -10,11 +10,10 @@ const itemsRoutes = require('./routes/itemsRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const discountRoutes = require('./routes/discountRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 require('./config/db'); 
 
 const app = express();
-
-// Middleware
 
 
 const corsOptions = {
@@ -63,6 +62,7 @@ app.use('/api/items', itemsRoutes);
 app.use('/api/', transactionRoutes);
 app.use('/api', discountRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 app.use((err, req, res, next) => {
