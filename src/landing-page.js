@@ -12,7 +12,6 @@ const apiUrl = window.APP_CONFIG.API_URL;
 function Landing() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [activeCategory, setActiveCategory] = useState('All Products');
-  const [activeMenuItem, setActiveMenuItem] = useState('Dashboard');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -61,7 +60,7 @@ function Landing() {
     setSearchQuery('');
     try {
       const response = await fetch(`${apiUrl}/api/items`);
-      if (!response.ok) throw new Error('Failed to fetch 2');
+      if (!response.ok) throw new Error('Failed to fetch');
       const data = await response.json();
       setProducts(data);
 
@@ -123,7 +122,6 @@ function Landing() {
     setDisplayProducts(filteredProducts);
   };
 
-  const handleMenuItemClick = (menuItem) => setActiveMenuItem(menuItem);
   const handleProductClick = (product) => {
     if (!user) {
       alert ('Please log in to add items to your cart');
@@ -248,20 +246,12 @@ function Landing() {
                 <option value="default">Select</option>
                 <option value="lowToHigh">Price: Low to High</option>
                 <option value="highToLow">Price: High to Low</option>
-                {/*<option>Best Selling</option>
-                <option>Newest First</option>*/}
               </select>
-              {/* <div className="filter-label">In Stock:</div>
-              <select className="filter-select">
-                <option>All Items</option>
-                <option>In Stock Only</option>
-                <option>Out of Stock</option>
-              </select> */}
             </div>
             <div className="product-grid">
               {displayProducts.map((product) => (
                 <div
-                  key={product.id}
+                  key={product.Item_ID}
                   className="product-card"
                   onClick={() => handleProductClick(product)}
                 >

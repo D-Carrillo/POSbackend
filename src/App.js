@@ -19,7 +19,7 @@ function App() {
     <NotificationProvider>
       <Router>
         <Routes>
-          <Route path="/" element={user ? <Landing /> : <Navigate to="/login" />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
           <Route path="/user-page" element={<UserPage />} />
           <Route path="/supplier-page" element={<SupplierPage />} />

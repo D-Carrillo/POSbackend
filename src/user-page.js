@@ -27,6 +27,7 @@ const UserPage = () => {
     const [editMode, setEditMode] = useState(false);
     const [transactionItems, setTransactionItems] = useState([]);
     const [showTransactionHistory, setShowTransactionHistory] = useState(false);
+    const [originalUserData, setOriginalUserData] = useState(null);
     const [userData, setUserData] = useState({
         first_name: '',
         middle_Initial: '',
@@ -188,6 +189,14 @@ const UserPage = () => {
         window.location.href = '/';
     }
 
+    const toggleEditMode = () => {
+        if (!editMode) {
+            setOriginalUserData({...userData});
+        }
+        setEditMode(!editMode);
+    };
+
+
     const handleDeleteAccount = async () => {
 
         if (!window.confirm(`Delete your ${user.type} account?`)) return;
@@ -266,11 +275,6 @@ const UserPage = () => {
                 CheckMate
                 </div>
                 <div className="user-controls">
-                {/* <Link to="/shopping-cart">
-                    <button className="cart-button" title="View Shopping Cart">
-                    <FontAwesomeIcon icon={faShoppingCart} />
-                    </button>
-                </Link> */}
                 <div className="user-info">
                     <Link to={user.type === 'customer' ? "/user-page" : "/supplier-page"}>
                         <button className="user-button">{user.first_name}</button>
@@ -334,6 +338,8 @@ const UserPage = () => {
                                     <input
                                         type="tel"
                                         name="Phone_Number"
+                                        pattern="\d{10}"
+                                        maxLength={10}
                                         value={userData.Phone_Number}
                                         onChange={handleInputChange}
                                         required
@@ -344,9 +350,11 @@ const UserPage = () => {
                                     <input
                                         type="date"
                                         name="DOB"
-                                        //change
+                                        
                                         value={userData.DOB ? userData.DOB.split('T')[0] : ""}
                                         onChange={handleInputChange}
+                                        max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                                        title="You must be at least 18 years old"
                                     />
                                 </div>
                             </div>
@@ -444,7 +452,12 @@ const UserPage = () => {
                             </div>
 
                             <div className="form-actions">
-                                <button type="button" onClick={() => setEditMode(false)} className="cancel-button">
+                                <button type="button" onClick={() => {
+                                    if (originalUserData) {
+                                        setUserData(originalUserData);
+                                    }
+                                    setEditMode(false);
+                                }} className="cancel-button">
                                     Cancel
                                 </button>
                                 <button type="button" onClick={handleSave} className="save-button">
@@ -478,7 +491,7 @@ const UserPage = () => {
                             </div>
 
                             <button 
-                                onClick={() => setEditMode(true)} 
+                                onClick={toggleEditMode} 
                                 className="edit-profile-button"
                             >
                                 Edit Profile

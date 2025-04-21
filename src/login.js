@@ -83,7 +83,9 @@ const Login = () => {
                         </form>
                         <p>
                             Don't have an account? <Link to = {typeOfUser === 'supplier' ? '/supplier-entry-form' : '/customer-entry-form'}>Sign Up</Link> 
+                            
                         </p>
+                        
 
                         {error && (
                             <div className="error-message-for-login" style={{

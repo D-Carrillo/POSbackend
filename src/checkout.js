@@ -25,7 +25,7 @@ const Checkout = () => {
   // Calculate totals on component mount
   useEffect(() => {
     try {
-      const savedCart = JSON.parse(localStorage.getItem('checkoutCart'));
+      const savedCart = JSON.parse(localStorage.getItem('checkoutCart')) || JSON.parse(localStorage.getItem('cart'));
       const savedDiscounts = JSON.parse(localStorage.getItem('appliedDiscountCodes'));
       const storedDiscountDetails = localStorage.getItem('appliedDiscountDetails');
       if (storedDiscountDetails) {
@@ -33,7 +33,6 @@ const Checkout = () => {
       }
       console.log('Loaded discounts:', savedDiscounts);
       console.log(savedCart);
-      console.log('this', discountDetails);
       if (!savedCart || !savedCart.items || savedCart.items.length === 0) {
         window.location.href = '/shopping-cart';
         return;
@@ -132,7 +131,6 @@ const Checkout = () => {
   
       const transactionId = transactionResponse.data.transactionId;
   
-      //Create a transaction item record
       const flatDiscountDetails = discountDetails?.flat() || [];
 
       await Promise.all(cart.items.map(async (item) => {

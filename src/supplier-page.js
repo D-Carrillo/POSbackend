@@ -29,6 +29,7 @@ const SupplierPage = () => {
     const salesReportRef = useRef(null);
     const topItemsReportRef = useRef(null);
     const discountReportRef = useRef(null);
+    const [originalUserData, setOriginalUserData] = useState(null);
     const [tempItemData, setTempItemData] = useState({
         Name: '',
         description: '',
@@ -170,6 +171,14 @@ const SupplierPage = () => {
         }));
     }
 
+    const toggleEditMode = () => {
+        if (!editMode) {
+            setOriginalUserData({...userData});
+        }
+        setEditMode(!editMode);
+    };
+
+    
     const handleSave = async () => {
         try {
             const updateData = {
@@ -268,9 +277,6 @@ const SupplierPage = () => {
         });
     };
 
-    const cancelEditing = () => {
-        setEditingItem(null);
-    };
 
     const handleTempChange = (e) => {
         const { name, value } = e.target;
@@ -347,6 +353,9 @@ const SupplierPage = () => {
         window.location.href = '/';
     }
 
+    const cancelEditing = () => {
+        setEditingItem(null);
+    };
 
 
     const handleRefreshAllData = () => {
@@ -441,7 +450,6 @@ const SupplierPage = () => {
                     <>
                         <div className="profile-section">
                             <h2>Your Profile</h2>
-                            {console.log("thisthisthis", userData)}
                             {editMode ? (
                                 <div className="edit-profile-form">
                                     <div className="form-row">
@@ -521,6 +529,8 @@ const SupplierPage = () => {
                                                 name="dob"
                                                 value={userData.dob ? userData.dob.split('T')[0] : ""}
                                                 onChange={handleInputChange}
+                                                max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                                                title="You must be at least 18 years old"
                                             />
                                         </div>
                                     </div>
@@ -602,7 +612,13 @@ const SupplierPage = () => {
                                         </div>
                                     </div>
                                     <div className="form-actions">
-                                        <button type="button" onClick={() => setEditMode(false)} className="cancel-button">
+                                        <button type="button" onClick={ () => {
+                                            if (originalUserData) {
+                                                setUserData(originalUserData);
+                                            }
+                                            setEditMode(false);
+                                        }
+                                        } className="cancel-button">
                                             Cancel
                                         </button>
                                         <button type="button" onClick={handleSave} className="save-button">
@@ -634,7 +650,7 @@ const SupplierPage = () => {
                                         <p>{userData.Country}</p>
                                     </div>
                                     <button
-                                        onClick={() => setEditMode(true)}
+                                        onClick={toggleEditMode}
                                         className="edit-profile-button"
                                     >
                                         Edit Profile

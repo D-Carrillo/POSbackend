@@ -27,6 +27,15 @@ const DiscountModal = ({ isOpen, onClose, onSubmit, itemId}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const start = new Date(discountData.startDate);
+        const end = new Date(discountData.endDate);
+
+        if (end < start) {
+            alert("End date cannot be earlier than start date.");
+            return;
+        }
+
         onSubmit(discountData);
         onClose();
     };
@@ -84,6 +93,7 @@ const DiscountModal = ({ isOpen, onClose, onSubmit, itemId}) => {
                                 className='model-input' 
                                 type="date"
                                 name="startDate"
+                                max={discountData.endDate}
                                 value = {discountData.startDate}
                                 onChange = {handleChange}
                                 required
@@ -96,6 +106,7 @@ const DiscountModal = ({ isOpen, onClose, onSubmit, itemId}) => {
                             className='model-input' 
                             type="date"
                             name="endDate"
+                            min={discountData.startDate}
                             value={discountData.endDate}
                             onChange={handleChange}
                             required
